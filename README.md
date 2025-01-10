@@ -1,3 +1,4 @@
+更新了V2版本，直接releases下载压缩包即可。优化了提示词，联系上下文
 参考
 https://github.com/Felix3322/PotPlayer_Chatgpt_Translate
 的项目进行修改。
