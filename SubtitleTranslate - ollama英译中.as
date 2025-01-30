@@ -80,9 +80,9 @@ string ServerLogin(string User, string Pass) {
         return "fail";
     }
 
-    // 保存设置到临时存储
-    HostSaveString("api_key", api_key);
-    HostSaveString("selected_model", selected_model);
+    // 保存设置到临时存储，添加 ollama_ 前缀避免冲突
+    HostSaveString("api_key_ollama", api_key);
+    HostSaveString("selected_model_ollama", selected_model);
 
     HostPrintUTF8("{$CP949=API 키와 모델 이름이 성공적으로 설정되었습니다.$}{$CP950=API 金鑰與模型名稱已成功配置。$}{$CP0=API Key and model name successfully configured.$}\n");
     return "200 ok";
@@ -92,8 +92,8 @@ string ServerLogin(string User, string Pass) {
 void ServerLogout() {
     api_key = "";
     selected_model = "wangshenzhi/gemma2-9b-chinese-chat:latest"; // 重置为默认模型
-    HostSaveString("api_key", "");
-    HostSaveString("selected_model", selected_model);
+    HostSaveString("api_key_ollama", "");
+    HostSaveString("selected_model_ollama", selected_model);
     HostPrintUTF8("{$CP949=성공적으로 로그아웃되었습니다.$}{$CP950=已成功登出。$}{$CP0=Successfully logged out.$}\n");
 }
 
@@ -110,8 +110,8 @@ string JsonEscape(const string &in input) {
 
 // 翻译函数
 string Translate(string Text, string &in SrcLang, string &in DstLang) {
-    // 从临时存储中加载模型名称
-    selected_model = HostLoadString("selected_model", "wangshenzhi/gemma2-9b-chinese-chat:latest");
+    // 从临时存储中加载模型名称，使用新的键名
+    selected_model = HostLoadString("selected_model_ollama", "wangshenzhi/gemma2-9b-chinese-chat:latest");
 
     if (DstLang.empty() || DstLang == "{$CP949=자동 감지$}{$CP950=自動檢測$}{$CP0=Auto Detect$}") {
         HostPrintUTF8("{$CP949=목표 언어가 지정되지 않았습니다.$}{$CP950=目標語言未指定。$}{$CP0=Target language not specified.$}\n");
@@ -179,9 +179,9 @@ string Translate(string Text, string &in SrcLang, string &in DstLang) {
 // 插件初始化
 void OnInitialize() {
     HostPrintUTF8("{$CP949=ollama 번역 플러그인이 로드되었습니다.$}{$CP950=ollama 翻譯插件已加載。$}{$CP0=ollama translation plugin loaded.$}\n");
-    // 从临时存储中加载模型名称和 API Key（如果已保存）
-    api_key = HostLoadString("api_key", "");
-    selected_model = HostLoadString("selected_model", "wangshenzhi/gemma2-9b-chinese-chat:latest");
+    // 从临时存储中加载模型名称和 API Key（如果已保存），使用新的键名
+    api_key = HostLoadString("api_key_ollama", "");
+    selected_model = HostLoadString("selected_model_ollama", "wangshenzhi/gemma2-9b-chinese-chat:latest");
     if (!api_key.empty()) {
         HostPrintUTF8("{$CP949=저장된 API 키와 모델 이름이 로드되었습니다.$}{$CP950=已加載保存的 API 金鑰與模型名稱。$}{$CP0=Saved API Key and model name loaded.$}\n");
     }
