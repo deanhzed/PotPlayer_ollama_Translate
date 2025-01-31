@@ -8,7 +8,7 @@ string GetTitle() {
 }
 
 string GetVersion() {
-    return "1.7";
+    return "1.6";
 }
 
 string GetDesc() {
@@ -71,7 +71,7 @@ string ServerLogin(string User, string Pass) {
     api_key = Pass.Trim();
 
     selected_model.MakeLower();
-    
+
     array<string> names = GetOllamaModelNames();
 
     // 验证模型名称是否为空或是否为支持的模型
