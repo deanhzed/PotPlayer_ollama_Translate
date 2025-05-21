@@ -158,9 +158,8 @@ string Translate(string Text, string &in SrcLang, string &in DstLang) {
     // JSON 转义
     string escapedPrompt = JsonEscape(prompt);
 
-    // 构建请求数据
-    string requestData = "{\"model\":\"" + selected_model + "\",\"messages\":[{\"role\":\"user\",\"content\":\"" + escapedPrompt + "\"}]}";
-    string headers = "Content-Type: application/json";
+    // 构建请求数据（新增 options 字段）
+    string requestData = "{\"model\":\"" + selected_model + "\",\"messages\":[{\"role\":\"user\",\"content\":\"" + escapedPrompt + "\"}],\"options\":{\"deep_thinking\":false}}";    string headers = "Content-Type: application/json";
 
     // 发送请求
     string response = HostUrlGetString(api_url, UserAgent, headers, requestData);
